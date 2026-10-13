@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Iron Legacy Analytics Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f5f7f7; --surface:#ffffff; --fg:#14201f; --muted:#5a6b69; --line:#dbe3e2;
+  --accent:#0e7c74; --accent-soft:#e1f1ef; --warn:#a4570f; --warn-soft:#fbefe2;
+  --f-body:"Hanken Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1312; --surface:#121c1b; --fg:#e4eeec; --muted:#93a5a2; --line:#24312f;
+  --accent:#4fc2b6; --accent-soft:#16302d; --warn:#e8a764; --warn-soft:#2c2116; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1312; --surface:#121c1b; --fg:#e4eeec; --muted:#93a5a2; --line:#24312f;
+  --accent:#4fc2b6; --accent-soft:#16302d; --warn:#e8a764; --warn-soft:#2c2116; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:0 64px}
+a{color:var(--accent);text-underline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}.rail{display:none}}
+
+header.top{max-width:1080px;margin:0 auto;padding-block:56px 32px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(32px,5vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:10px 0 14px;text-wrap:balance;max-width:20ch}
+.lead{font-size:19px;color:var(--muted);max-width:60ch;margin:0}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:28px;font-weight:600;font-size:14px}
+.flow span.node{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.flow span.arrow{color:var(--muted)}
+
+.rail{position:sticky;top:24px;align-self:start;padding-top:8px}
+.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rail a{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.rail a:hover{background:var(--surface);color:var(--fg)}
+.rail .dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex:none;display:grid;place-items:center;font-size:11px}
+.rail a.done .dot{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.rail a.done{color:var(--fg)}
+.progress{margin-top:16px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+
+main{min-width:0;display:grid;gap:28px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px clamp(18px,4vw,36px);min-width:0;scroll-margin-top:24px}
+section.plain{background:transparent;border:0;padding-inline:0}
+h2{font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-.01em;margin:4px 0 8px;text-wrap:balance}
+h3{font-size:17px;margin:0 0 6px}
+.step-no{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+p{margin:0 0 14px;max-width:68ch}
+ul{padding-left:20px;margin:0 0 14px;display:grid;gap:8px}
+code{font-family:var(--f-mono);font-size:.86em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+
+.stats{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));margin:8px 0 4px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--surface)}
+.stat b{display:block;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.stat.warn{border-color:var(--warn);background:var(--warn-soft)}
+.stat.warn b{color:var(--warn)}
+
+.timeline{margin:18px 0 6px}
+.tl-bar{display:grid;grid-template-columns:repeat(46,1fr);gap:2px;height:34px}
+.tl-bar i{border-radius:3px;background:var(--line)}
+.tl-bar i.on{background:var(--accent)}
+.tl-labels{display:grid;grid-template-columns:12fr 12fr 12fr 10fr;font-size:12px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+
+.match{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));margin:12px 0}
+.match div{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.match div.bad{border-color:var(--warn);background:var(--warn-soft)}
+.match small{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.match code{font-size:15px}
+
+.bars{display:grid;gap:10px;margin:14px 0}
+.brow{display:grid;grid-template-columns:130px minmax(0,1fr) 120px;gap:12px;align-items:center;font-size:14px}
+.brow .track{height:14px;background:var(--bg);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.brow .track i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.brow.dim .track i{background:var(--muted);opacity:.5}
+.brow .num{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right}
+@media (max-width:480px){.brow{grid-template-columns:96px minmax(0,1fr) 84px;font-size:13px}}
+
+.tbl{overflow-x:auto;margin:12px 0 16px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:480px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--bg)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+.tag.warn{color:var(--warn);background:var(--warn-soft)}
+
+.tip{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0 0;max-width:none}
+
+.steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:12px;counter-reset:s}
+.steps li{border:1px solid var(--line);border-radius:12px;padding:14px 16px 14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:start}
+.steps li .no{counter-increment:s;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:14px;grid-row:span 2}
+.steps li .no::before{content:counter(s)}
+.steps li label{display:flex;gap:10px;align-items:flex-start;font-weight:700;cursor:pointer}
+.steps li input{accent-color:var(--accent);width:16px;height:16px;margin:4px 0 0;flex:none}
+.steps li p{margin:0;color:var(--muted);font-size:15px}
+.steps li:has(input:checked){border-color:var(--accent)}
+.steps li:has(input:checked) label{text-decoration:line-through;text-decoration-color:var(--accent)}
+.who{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-left:auto;padding-left:8px;white-space:nowrap}
+
+.gotchas{list-style:none;padding:0;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.gotchas li{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.gotchas li.warn{border-color:var(--warn);background:var(--warn-soft)}
+.gotchas strong{display:block;margin-bottom:4px}
+footer{max-width:1080px;margin:40px auto 0;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">Iron Legacy Wealth Advisors · Analytics review</div>
+  <h1>Your website analytics stopped in September 2023</h1>
+  <p class="lead">The Google Analytics property we were given has recorded zero visits for over two years, and it never tracked a single lead. This page shows what we found and the seven steps to get reliable numbers back. Most of it takes under an hour once FMG is on the line.</p>
+  <div class="flow" aria-label="The plan">
+    <span class="node">Reconnect tracking</span><span class="arrow">→</span>
+    <span class="node">Count leads</span><span class="arrow">→</span>
+    <span class="node">Link Search Console</span><span class="arrow">→</span>
+    <span class="node">30-day baseline</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="rail" aria-label="Sections">
+    <ol>
+      <li><a href="#glance"><span class="dot"></span>At a glance</a></li>
+      <li><a href="#why"><span class="dot"></span>Why it stopped</a></li>
+      <li><a href="#history"><span class="dot"></span>What 2023 tells us</a></li>
+      <li><a href="#site"><span class="dot"></span>Website basics</a></li>
+      <li><a href="#foundation"><span class="dot"></span>Laying the foundation</a></li>
+      <li><a href="#open"><span class="dot"></span>Open questions</a></li>
+    </ol>
+    <div class="progress"><span id="pcount">0 of 7</span> foundation steps done<div class="bar"><i id="pbar"></i></div></div>
+  </nav>
+
+  <main>
+    <section id="glance">
+      <div class="step-no">Finding 1</div>
+      <h2>At a glance</h2>
+      <p>Property <code>Iron Legacy Advisors - GA4</code> (ID 367758041). Checked October 13, 2026.</p>
+      <div class="stats">
+        <div class="stat warn"><b>0</b><span>visits recorded since late September 2023</span></div>
+        <div class="stat"><b>1,185</b><span>visits recorded, April to September 2023</span></div>
+        <div class="stat warn"><b>0</b><span>leads, calls or form fills ever tracked</span></div>
+        <div class="stat"><b>~5.5</b><span>months of usable history</span></div>
+      </div>
+      <div class="timeline" aria-label="Months with data, January 2023 to October 2026">
+        <div class="tl-bar" id="tl"></div>
+        <div class="tl-labels"><span>2023</span><span>2024</span><span>2025</span><span>2026</span></div>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Data recorded</span><span><i style="background:var(--line)"></i>Nothing recorded</span></div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="step-no">Finding 2</div>
+      <h2>Why it stopped: the website sends data somewhere else</h2>
+      <p>Every GA4 property has a Measurement ID. The website has to carry that exact ID or the property sees nothing. Ironlegacyadvisors.com carries two IDs today, and neither one belongs to the property we were given.</p>
+      <div class="match">
+        <div class="bad"><small>Property we were given</small><code>G-M461CZR882</code><p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Not found anywhere on the site.</p></div>
+        <div><small>On the site now</small><code>G-HSJM6H6B4J</code><p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Probably the site's main analytics. Owner unknown.</p></div>
+        <div><small>On the site now</small><code>G-90NR43CZBZ</code><p style="margin:6px 0 0;font-size:14px;color:var(--muted)">FMG Suite's own platform tag.</p></div>
+      </div>
+      <p>The website runs on FMG Suite. FMG adds its own tracking to every advisor site. The likeliest story is that the site was rebuilt or switched tags in fall 2023, and this property was left behind. The data from the last two years probably exists, but it's in <code>G-HSJM6H6B4J</code>, and nobody on our side has access to it yet.</p>
+      <p class="tip">The data stream is also set to <code>http://ironlegacyadvisors.com</code>. The live site is <code>https://www.ironlegacyadvisors.com</code>. That doesn't stop tracking, but it should match.</p>
+    </section>
+
+    <section id="history">
+      <div class="step-no">Finding 3</div>
+      <h2>What the 2023 data tells us</h2>
+      <p>Five months is a small sample, but it shows two useful patterns. Visitors from Google search stay longest. And almost a third of the traffic looks like bots.</p>
+      <div class="bars" aria-label="Visits by channel, April to September 2023">
+        <div class="brow"><span>Direct</span><span class="track"><i style="width:100%"></i></span><span class="num">468 · 37% eng.</span></div>
+        <div class="brow dim"><span>Unassigned</span><span class="track"><i style="width:74%"></i></span><span class="num">345 · 1% eng.</span></div>
+        <div class="brow"><span>Google search</span><span class="track"><i style="width:55%"></i></span><span class="num">258 · 65% eng.</span></div>
+        <div class="brow"><span>Social</span><span class="track"><i style="width:15%"></i></span><span class="num">69 · 32% eng.</span></div>
+        <div class="brow"><span>Email</span><span class="track"><i style="width:7%"></i></span><span class="num">33 · 55% eng.</span></div>
+        <div class="brow"><span>Referral</span><span class="track"><i style="width:2%"></i></span><span class="num">10 · 100% eng.</span></div>
+      </div>
+      <ul>
+        <li><strong>Search visitors are the best visitors.</strong> 65% of them engaged, and they stayed 46 seconds on average. Direct visitors stayed 14 seconds.</li>
+        <li><strong>345 "Unassigned" visits are likely bots.</strong> Only 1% engaged, at 4 seconds each. They inflate the totals and should be filtered out going forward.</li>
+        <li><strong>People check out the advisors.</strong> After the homepage, the most-viewed pages were Who We Are and Brian's bio.</li>
+      </ul>
+      <div class="tbl"><table>
+        <thead><tr><th>Page</th><th>Views</th><th>Visitors</th><th>Avg. time</th></tr></thead>
+        <tbody>
+          <tr><td>Home <code>/</code></td><td class="n">667</td><td class="n">430</td><td class="n">19s</td></tr>
+          <tr><td>Who We Are</td><td class="n">213</td><td class="n">127</td><td class="n">33s</td></tr>
+          <tr><td>Brian Smith bio</td><td class="n">74</td><td class="n">58</td><td class="n">24s</td></tr>
+          <tr><td>Services</td><td class="n">54</td><td class="n">34</td><td class="n">19s</td></tr>
+          <tr><td>Blog</td><td class="n">47</td><td class="n">18</td><td class="n">26s</td></tr>
+          <tr><td>Join Our Team</td><td class="n">42</td><td class="n">27</td><td class="n">18s</td></tr>
+          <tr><td>Contact <span class="tag warn">no lead tracking</span></td><td class="n">41</td><td class="n">37</td><td class="n">12s</td></tr>
+          <tr><td>Mason Smith bio</td><td class="n">33</td><td class="n">26</td><td class="n">19s</td></tr>
+        </tbody>
+      </table></div>
+      <p>37 people reached the Contact page, but no one can tell how many of them called, emailed or sent the form. That's the most important gap to close.</p>
+    </section>
+
+    <section id="site">
+      <div class="step-no">Finding 4</div>
+      <h2>Website basics that affect search and AI answers</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Check</th><th>Status</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Business details for Google (schema)</td><td><span class="tag">Good</span></td><td>Name, Birmingham address and phone are set up as a financial service</td></tr>
+          <tr><td>robots.txt and sitemap</td><td><span class="tag">Good</span></td><td>Both load, and search engines are allowed in</td></tr>
+          <tr><td>Main headline (H1) on the homepage</td><td><span class="tag warn">Missing</span></td><td>No H1 at all, so Google has to guess what the page is about</td></tr>
+          <tr><td>llms.txt for AI assistants</td><td><span class="tag warn">Missing</span></td><td>The address loads the homepage instead of a real file</td></tr>
+          <tr><td>Sitemap size</td><td><span class="tag warn">Check</span></td><td>570 URLs, most of them probably FMG's shared article library, which competes with the pages that matter</td></tr>
+        </tbody>
+      </table></div>
+      <p class="tip">Content changes on an advisor site usually go through compliance review. Everything in the foundation steps below is tracking only. None of it changes what visitors read.</p>
+    </section>
+
+    <section id="foundation">
+      <div class="step-no">Suggestions</div>
+      <h2>Laying the foundation</h2>
+      <p>Do these in order. Steps 1 and 2 bring the numbers back. Steps 3 to 7 make sure the numbers are worth reading. Tick each one off as it's done. Your progress is saved in this browser.</p>
+      <ol class="steps">
+        <li><span class="no"></span><label><input type="checkbox" data-k="s1">Find out who owns G-HSJM6H6B4J <span class="who">Brian + FMG</span></label><p>Ask FMG support which Google account holds that tag. If it's Brian's, add clients@rankprompt.com as an Administrator. Then you get the last two years of data back too.</p></li>
+        <li><span class="no"></span><label><input type="checkbox" data-k="s2">Pick one property and make the site send to it <span class="who">RankPrompt + FMG</span></label><p>Either keep G-HSJM6H6B4J or put G-M461CZR882 in FMG's custom tracking field. One property, one ID. Then fix the stream URL to https://www.</p></li>
+        <li><span class="no"></span><label><input type="checkbox" data-k="s3">Track leads as key events <span class="who">RankPrompt</span></label><p>Count contact form sends, phone taps, email clicks and "schedule a meeting" clicks. The 2023 data already shows <code>tel</code> and <code>mailto</code> clicks happen. Today they just aren't counted as leads.</p></li>
+        <li><span class="no"></span><label><input type="checkbox" data-k="s4">Filter out bots and office traffic <span class="who">RankPrompt</span></label><p>Exclude the office IP so staff visits don't count, and watch the "Unassigned" channel. In 2023, a third of the visits were junk.</p></li>
+        <li><span class="no"></span><label><input type="checkbox" data-k="s5">Connect Google Search Console <span class="who">RankPrompt</span></label><p>Verify the domain and link it to GA4. That shows which searches bring people in, which matters most because search visitors engage best.</p></li>
+        <li><span class="no"></span><label><input type="checkbox" data-k="s6">Set data retention to 14 months <span class="who">RankPrompt</span></label><p>GA4 defaults to 2 months for detailed reports. Fourteen months lets us compare this year with last year.</p></li>
+        <li><span class="no"></span><label><input type="checkbox" data-k="s7">Collect 30 days, then report monthly <span class="who">RankPrompt</span></label><p>After 30 clean days we have a real baseline: visits, search visits and leads. Every report after that measures against it.</p></li>
+      </ol>
+    </section>
+
+    <section id="open" class="plain">
+      <div class="step-no">Before we start</div>
+      <h2>Open questions</h2>
+      <ul class="gotchas">
+        <li class="warn"><strong>Who owns the live tag?</strong>Until we know who holds G-HSJM6H6B4J, any report we send is based on 2023 data only.</li>
+        <li><strong>Does FMG allow a second tag?</strong>Most FMG plans have a field for custom tracking codes, but some edits go through their support team.</li>
+        <li><strong>Is there a booking tool?</strong>If meetings are booked through Calendly or a similar tool, that click is the lead to track.</li>
+        <li><strong>Finance industry limits</strong>GA4 limits some data sharing for properties set to the Finance industry. That doesn't affect anything above.</li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<footer>Prepared by RankPrompt · October 13, 2026 · Source: Google Analytics property 367758041 and a scan of ironlegacyadvisors.com</footer>
+
+<script>
+(function(){
+  // Timeline: Jan 2023 to Oct 2026, months with data are Apr to Sep 2023
+  var tl = document.getElementById('tl');
+  for (var i = 0; i < 46; i++) {
+    var c = document.createElement('i');
+    if (i >= 3 && i <= 8) c.className = 'on';
+    tl.appendChild(c);
+  }
+  // Step checkboxes, remembered per viewer
+  var KEY = 'iron-legacy-foundation';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ saved = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.steps input'));
+  function render(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    document.getElementById('pcount').textContent = n + ' of ' + boxes.length;
+    document.getElementById('pbar').style.width = (n / boxes.length * 100) + '%';
+  }
+  boxes.forEach(function(b){
+    b.checked = !!saved[b.dataset.k];
+    b.addEventListener('change', function(){
+      saved[b.dataset.k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){}
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
